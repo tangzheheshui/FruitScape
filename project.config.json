@@ -34,7 +34,11 @@
   },
   "simulatorPluginLibVersion": {},
   "packOptions": {
-    "ignore": [],
+    "ignore": [
+      { "type": "file", "value": "images/app-icon.png" },
+      { "type": "file", "value": "images/app-icon-notext.png" },
+      { "type": "file", "value": "images/app-icon-144.png" }
+    ],
     "include": []
   }
 }
