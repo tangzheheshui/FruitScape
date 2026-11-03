@@ -87,7 +87,8 @@ Page({
   },
 
   onMarkerTap(e) {
-    const idx = e.detail.markerId;
+    // markertap / labeltap 都走这里；兼容不同基础库返回 markerId 的位置
+    const idx = (e.detail && e.detail.markerId != null) ? e.detail.markerId : e.markerId;
     const f = fruit.all()[idx];
     if (f) this.showDetail(f);
   },

@@ -23,6 +23,7 @@
     markers="{{markers}}"
     show-location
     bindmarkertap="onMarkerTap"
+    bindlabeltap="onMarkerTap"
   ></map>
 
   <!-- 海报入口 -->
