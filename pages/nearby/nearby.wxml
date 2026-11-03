@@ -1,0 +1,82 @@
+<view class="page">
+  <!-- 月份选择器 -->
+  <view class="month-bar">
+    <scroll-view scroll-x class="month-scroll" scroll-into-view="m{{month}}" scroll-with-animation>
+      <view
+        wx:for="{{months}}"
+        wx:key="*this"
+        id="m{{item}}"
+        class="month-item {{item === month ? 'active' : ''}}"
+        data-m="{{item}}"
+        bindtap="chooseMonth"
+      >{{item}}月</view>
+    </scroll-view>
+  </view>
+
+  <!-- 子模式切换 -->
+  <view class="sub-tabs">
+    <view class="sub-tab {{subMode === 'nearby' ? 'active' : ''}}" data-mode="nearby" bindtap="switchSubMode">定位排序</view>
+    <view class="sub-tab {{subMode === 'province' ? 'active' : ''}}" data-mode="province" bindtap="switchSubMode">按省份查</view>
+  </view>
+
+  <!-- 定位排序 -->
+  <block wx:if="{{subMode === 'nearby'}}">
+    <view class="head-card">
+      <view class="hc-title">离我近的 {{month}}月露天应季产区</view>
+      <view class="hc-note">🔒 位置仅在本机计算距离，不收集、不上传</view>
+      <button class="locate-btn" bindtap="locate" disabled="{{locating}}">
+        {{locating ? '定位中…' : (located ? '重新定位' : '获取我的位置')}}
+      </button>
+    </view>
+
+    <scroll-view scroll-y class="list" wx:if="{{located}}">
+      <view class="item" wx:for="{{list}}" wx:key="id" data-id="{{item.id}}" bindtap="goFruit">
+        <view class="item-main">
+          <text class="item-name">{{item.name}}</text>
+          <text class="item-dist">{{item.distanceKm}} km</text>
+        </view>
+        <view class="item-sub">{{item.province}} · {{item.city}} · {{item.season}}</view>
+        <view class="item-tip">{{item.tip}}</view>
+      </view>
+      <view class="empty-state" wx:if="{{list.length === 0}}">
+        <text class="emoji">🍂</text>这个月暂时没有录入露天果实
+      </view>
+    </scroll-view>
+
+    <view class="empty-state" wx:if="{{!located}}">
+      <text class="emoji">📍</text>
+      <text wx:if="{{denied}}">定位不可用（个人主体小程序通常无此权限）</text>
+      <text wx:else>点击上方按钮，查看离你最近的当季产区</text>
+      <text class="link" wx:if="{{denied}}" data-mode="province" bindtap="switchSubMode">→ 切到「按省份查」</text>
+    </view>
+  </block>
+
+  <!-- 按省份查 -->
+  <block wx:if="{{subMode === 'province'}}">
+    <scroll-view scroll-y class="province-detail">
+      <view class="province-chips">
+        <view
+          class="chip {{item.name === activeProvince ? 'active' : ''}}"
+          wx:for="{{provinces}}"
+          wx:key="name"
+          data-p="{{item.name}}"
+          bindtap="tapProvince"
+        >{{item.name}}</view>
+      </view>
+
+      <view class="pd-title" wx:if="{{activeProvince}}">{{activeProvince}} · {{month}}月露天应季果（{{provinceFruits.length}}）</view>
+
+      <view class="item" wx:for="{{provinceFruits}}" wx:key="id" data-id="{{item.id}}" bindtap="goFruit">
+        <view class="item-main">
+          <text class="item-name">{{item.name}}</text>
+          <text class="item-tag">{{item.city}}</text>
+        </view>
+        <view class="item-sub">{{item.season}} · {{item.variety}}</view>
+        <view class="item-tip">{{item.tip}}</view>
+      </view>
+
+      <view class="hint" wx:if="{{!activeProvince}}">选择省份，查看该省当月露天应季水果</view>
+      <view class="hint" wx:if="{{activeProvince && provinceFruits.length === 0}}">{{activeProvince}}这个月没有录入露天果实</view>
+    </scroll-view>
+  </block>
+</view>

@@ -1,0 +1,13 @@
+# 微信开发者工具个人配置（每台机器不同，不入库）
+project.private.config.json
+
+# 依赖
+node_modules/
+miniprogram_npm/
+
+# 系统 / 编辑器
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log

@@ -1,0 +1,39 @@
+/* 时令果册 全局样式 —— 清新浅绿 + 暖橙 */
+page {
+  background: #F6FAF0;
+  color: #333333;
+  font-size: 28rpx;
+  line-height: 1.6;
+  font-family: -apple-system, "PingFang SC", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* 颜色工具类 */
+.c-green { color: #6FA95C; }
+.c-orange { color: #E8853C; }
+.c-grey { color: #9AA39A; }
+
+/* 通用按钮 */
+.btn-primary {
+  background: #E8853C;
+  color: #ffffff;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  text-align: center;
+  padding: 20rpx 0;
+}
+.btn-primary[disabled] {
+  opacity: 0.6;
+}
+
+/* 空状态 */
+.empty-state {
+  padding: 120rpx 40rpx;
+  text-align: center;
+  color: #9AA39A;
+  font-size: 26rpx;
+}
+.empty-state .emoji {
+  font-size: 72rpx;
+  display: block;
+  margin-bottom: 20rpx;
+}

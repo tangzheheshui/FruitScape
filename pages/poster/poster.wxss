@@ -1,0 +1,26 @@
+.poster-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24rpx;
+}
+.tip-bar {
+  color: #9aa39a;
+  font-size: 24rpx;
+  margin-bottom: 24rpx;
+}
+.canvas-wrap {
+  background: #ffffff;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.08);
+}
+.save-btn {
+  margin-top: 48rpx;
+  width: 70%;
+  background: #e8853c;
+  color: #ffffff;
+  font-size: 30rpx;
+  border-radius: 44rpx;
+}
+.save-btn[disabled] { opacity: 0.6; color: #ffffff; }

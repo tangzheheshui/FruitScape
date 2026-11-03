@@ -1,0 +1,25 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+.list { flex: 1; }
+.item {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  margin: 12rpx 24rpx;
+  padding: 24rpx;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.03);
+}
+.item-body { flex: 1; }
+.item-name { font-size: 30rpx; font-weight: 600; color: #2e3a2e; }
+.item-sub { color: #8a948a; font-size: 24rpx; margin-top: 6rpx; }
+.del {
+  color: #9aa39a;
+  font-size: 24rpx;
+  border: 1rpx solid #e0e5e0;
+  border-radius: 28rpx;
+  padding: 8rpx 24rpx;
+}

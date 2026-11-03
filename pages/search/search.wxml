@@ -1,0 +1,80 @@
+<view class="page">
+  <!-- 模式切换 -->
+  <view class="tabs">
+    <view class="tab {{mode === 'fruit' ? 'active' : ''}}" data-mode="fruit" bindtap="switchMode">按水果搜</view>
+    <view class="tab {{mode === 'province' ? 'active' : ''}}" data-mode="province" bindtap="switchMode">按省份查</view>
+  </view>
+
+  <!-- 按水果 -->
+  <block wx:if="{{mode === 'fruit'}}">
+    <view class="search-box">
+      <input
+        class="search-input"
+        placeholder="输入水果名，如：荔枝 / 苹果"
+        value="{{keyword}}"
+        confirm-type="search"
+        bindinput="onInput"
+        bindconfirm="doSearch"
+      />
+      <view class="search-btn" bindtap="doSearch">搜索</view>
+    </view>
+
+    <scroll-view scroll-y class="result-list">
+      <view
+        class="result-item"
+        wx:for="{{results}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="goFruit"
+      >
+        <view class="ri-main">
+          <text class="ri-name">{{item.name}}</text>
+          <text class="ri-tag">{{item.category}}</text>
+        </view>
+        <view class="ri-sub">{{item.province}} · {{item.city}} · {{item.season}}</view>
+        <view class="ri-tip">{{item.tip}}</view>
+      </view>
+      <view class="empty-state" wx:if="{{searched && results.length === 0}}">
+        <text class="emoji">🔍</text>没找到相关果实，换个词试试
+      </view>
+      <view class="hint" wx:if="{{!searched}}">输入水果名，查看它所有产区与上市月份</view>
+    </scroll-view>
+  </block>
+
+  <!-- 按省份 -->
+  <block wx:if="{{mode === 'province'}}">
+    <view class="province-wrap">
+      <scroll-view scroll-y class="province-list">
+        <view
+          class="province-item {{item.name === activeProvince ? 'active' : ''}}"
+          wx:for="{{provinces}}"
+          wx:key="name"
+          data-p="{{item.name}}"
+          bindtap="tapProvince"
+        >
+          <text>{{item.name}}</text>
+          <text class="pc">{{item.count}}</text>
+        </view>
+      </scroll-view>
+
+      <scroll-view scroll-y class="province-detail">
+        <view class="pd-title" wx:if="{{activeProvince}}">{{activeProvince}} · 露天时令果</view>
+        <view
+          class="result-item"
+          wx:for="{{provinceFruits}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="goFruit"
+        >
+          <view class="ri-main">
+            <text class="ri-name">{{item.name}}</text>
+            <text class="ri-tag">{{item.season}}</text>
+          </view>
+          <view class="ri-sub">{{item.city}} · {{item.variety}}</view>
+          <view class="ri-tip">{{item.tip}}</view>
+        </view>
+        <view class="hint" wx:if="{{!activeProvince}}">点击左侧省份查看该省露天时令水果</view>
+      </scroll-view>
+    </view>
+  </block>
+</view>

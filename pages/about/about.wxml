@@ -1,0 +1,36 @@
+<view class="about">
+  <view class="brand">
+    <view class="brand-logo">册</view>
+    <view class="brand-name">时令果册</view>
+    <view class="brand-slogan">看露天应季水果，拒绝大棚反季</view>
+  </view>
+
+  <view class="section">
+    <view class="sec-title">关于我们</view>
+    <view class="sec-body">我们只收录「露天自然成熟」的水果，剔除大棚早熟、冷库储藏、南半球进口反季果。成熟时间受每年气候影响，可能存在 ±7~15 天偏差，仅供参考。</view>
+  </view>
+
+  <view class="section">
+    <view class="sec-title">免责声明</view>
+    <view class="sec-body">本工具不售卖水果、不推荐商家，无法保证你线下买到的果子一定不是大棚货。所有信息仅供日常参考，不构成任何采购指导，也不涉及任何交易。</view>
+  </view>
+
+  <view class="section">
+    <view class="sec-title">隐私说明</view>
+    <view class="sec-body">“附近”功能仅在本地计算你到各产区的距离，不收集、不上传任何位置信息；保存海报时仅写入相册，不读取你的照片。</view>
+    <view class="link" bindtap="openPrivacy">查看《用户隐私保护指引》</view>
+  </view>
+
+  <view class="section">
+    <view class="sec-title">关于作者</view>
+    <view class="sec-body">这是一个独立开发的练手项目，持续更新每月时令清单与开发记录。</view>
+  </view>
+
+  <view class="section">
+    <view class="sec-title">意见反馈</view>
+    <view class="sec-body">发现上市时间或产地有误、或有任何建议，点下方按钮直接联系我们。</view>
+    <button class="contact-btn" open-type="contact">💬 联系客服 / 反馈</button>
+  </view>
+
+  <view class="version">版本 {{version}}</view>
+</view>
