@@ -14,19 +14,22 @@
     <view class="card orange">
       <view class="c-label">{{monthLabel}}应季</view>
       <view class="c-num">{{monthDone}}<text class="c-total">/{{monthTotal}}</text></view>
-      <view class="c-desc">本月已打卡</view>
+      <view class="c-desc">本月已尝</view>
       <view class="bar"><view class="bar-fill" style="width:{{monthPct}}%"></view></view>
     </view>
   </view>
 
-  <view class="list-head">{{monthLabel}}露天应季 · 点击打卡</view>
+  <!-- 提醒 -->
+  <view class="tips" wx:if="{{endingSoonNames || comingSoonNames}}">
+    <view class="tip-line" wx:if="{{endingSoonNames}}">⏳ 即将过季：{{endingSoonNames}}</view>
+    <view class="tip-line" wx:if="{{comingSoonNames}}">🌱 即将上市：{{comingSoonNames}}</view>
+  </view>
+
+  <view class="list-head">{{monthLabel}}露天应季（{{monthList.length}} 种）</view>
   <scroll-view scroll-y class="list">
-    <view class="item" wx:for="{{monthList}}" wx:key="id">
-      <view class="i-left">
-        <view class="i-name">{{item.name}} <text class="i-tag">露天</text></view>
-        <view class="i-sub">{{item.province}} · {{item.city}} · {{item.season}}</view>
-      </view>
-      <view class="i-btn {{item.checked ? 'on' : ''}}" data-id="{{item.id}}" bindtap="onToggle">{{item.checked ? '✓ 已尝' : '＋ 打卡'}}</view>
+    <view class="item" wx:for="{{monthList}}" wx:key="id" data-id="{{item.id}}" bindtap="goFruit">
+      <view class="i-name">{{item.name}} <text class="i-tag">露天</text></view>
+      <view class="i-sub">{{item.province}} · {{item.city}} · {{item.season}}</view>
     </view>
     <view wx:if="{{monthList.length === 0}}" class="empty">这个月暂时没有录入露天果实 🍂</view>
   </scroll-view>

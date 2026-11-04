@@ -19,9 +19,9 @@
     "backgroundColor": "#FFFFFF",
     "borderStyle": "black",
     "list": [
-      { "pagePath": "pages/home/home", "text": "图鉴", "iconPath": "images/tab-guide.png", "selectedIconPath": "images/tab-guide-active.png" },
+      { "pagePath": "pages/home/home", "text": "首页", "iconPath": "images/tab-home.png", "selectedIconPath": "images/tab-home-active.png" },
       { "pagePath": "pages/index/index", "text": "地图", "iconPath": "images/tab-map.png", "selectedIconPath": "images/tab-map-active.png" },
-      { "pagePath": "pages/favorite/favorite", "text": "打卡", "iconPath": "images/tab-checkin.png", "selectedIconPath": "images/tab-checkin-active.png" }
+      { "pagePath": "pages/favorite/favorite", "text": "我的", "iconPath": "images/tab-mine.png", "selectedIconPath": "images/tab-mine-active.png" }
     ]
   },
   "sitemapLocation": "sitemap.json",

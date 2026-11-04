@@ -25,29 +25,6 @@
 .month-item:last-child { margin-right: 20rpx; }
 .month-item.active { background: #e8853c; color: #ffffff; font-weight: 600; }
 
-/* 搜索 + 省份 */
-.search-bar { padding: 12rpx 24rpx 4rpx; }
-.search-input {
-  background: #f0f4ec;
-  border-radius: 32rpx;
-  height: 64rpx;
-  padding: 0 28rpx;
-  font-size: 26rpx;
-}
-.province-scroll { white-space: nowrap; padding: 8rpx 0 12rpx; }
-.province-item {
-  display: inline-block;
-  padding: 8rpx 22rpx;
-  margin: 0 8rpx;
-  border-radius: 28rpx;
-  font-size: 24rpx;
-  color: #5a645a;
-  background: #ffffff;
-  border: 1rpx solid #e0e5e0;
-}
-.province-item:first-child { margin-left: 20rpx; }
-.province-item.active { background: #e8853c; color: #ffffff; border-color: #e8853c; }
-
 /* 地图（加大面积） */
 .map {
   width: 100%;

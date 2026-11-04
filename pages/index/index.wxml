@@ -13,20 +13,6 @@
     </scroll-view>
   </view>
 
-  <!-- 搜索 + 省份筛选（原搜索页并入） -->
-  <view class="search-bar">
-    <input class="search-input" placeholder="搜水果 / 品种 / 产地" value="{{keyword}}" bindinput="onSearchInput" confirm-type="search" />
-  </view>
-  <scroll-view scroll-x class="province-scroll">
-    <view
-      wx:for="{{provinces}}"
-      wx:key="name"
-      class="province-item {{item.name === province ? 'active' : ''}}"
-      data-p="{{item.name}}"
-      bindtap="onProvinceTap"
-    >{{item.name}}</view>
-  </scroll-view>
-
   <!-- 地图 -->
   <map
     id="fruitMap"
@@ -42,7 +28,7 @@
 
   <!-- 列表 -->
   <view class="list-panel">
-    <view class="list-head">{{listTitle}} <text class="c-orange">{{list.length}}</text> 种</view>
+    <view class="list-head">{{monthLabel}}露天应季 <text class="c-orange">{{list.length}}</text> 种</view>
     <scroll-view scroll-y class="list">
       <view
         class="list-item"
@@ -58,7 +44,7 @@
         <view class="li-sub">{{item.province}} · {{item.city}} · {{item.season}}</view>
       </view>
       <view class="empty-state" wx:if="{{list.length === 0}}">
-        <text class="emoji">🍂</text>没有找到相关果实
+        <text class="emoji">🍂</text>这个月暂时没有录入露天果实
       </view>
     </scroll-view>
   </view>

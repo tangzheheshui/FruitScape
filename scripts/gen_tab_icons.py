@@ -27,15 +27,6 @@ def point_in_poly(x, y, poly):
     return inside
 
 
-def seg_dist(px, py, ax, ay, bx, by):
-    dx, dy = bx - ax, by - ay
-    if dx == 0 and dy == 0:
-        return ((px - ax) ** 2 + (py - ay) ** 2) ** 0.5
-    t = ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy)
-    t = max(0.0, min(1.0, t))
-    return ((px - (ax + t * dx)) ** 2 + (py - (ay + t * dy)) ** 2) ** 0.5
-
-
 def dist(px, py, cx, cy):
     return ((px - cx) ** 2 + (py - cy) ** 2) ** 0.5
 
@@ -46,11 +37,12 @@ def rect(px, py, x0, y0, x1, y1):
 
 # ---- 形状定义（归一化坐标 0..1）----
 
-def guide(x, y):
-    """图鉴：一本打开的书（中间中缝挖空）"""
-    body = rect(x, y, 0.26, 0.18, 0.74, 0.82)
-    spine = rect(x, y, 0.48, 0.18, 0.52, 0.82)
-    return body and not spine
+def home(x, y):
+    """首页：房子"""
+    roof = point_in_poly(x, y, [(0.5, 0.08), (0.04, 0.52), (0.96, 0.52)])
+    body = rect(x, y, 0.20, 0.50, 0.80, 0.86)
+    door = rect(x, y, 0.42, 0.62, 0.58, 0.86)
+    return (roof or body) and not door
 
 
 def map_pin(x, y):
@@ -61,11 +53,11 @@ def map_pin(x, y):
     return (body or tri) and not hole
 
 
-def checkin(x, y):
-    """打卡：对勾"""
-    a = seg_dist(x, y, 0.26, 0.52, 0.44, 0.70) <= 0.075
-    b = seg_dist(x, y, 0.44, 0.70, 0.78, 0.30) <= 0.075
-    return a or b
+def mine(x, y):
+    """我的：人像（头 + 身体椭圆）"""
+    head = dist(x, y, 0.5, 0.30) <= 0.13
+    body = ((x - 0.5) / 0.30) ** 2 + ((y - 0.68) / 0.24) ** 2 <= 1
+    return head or body
 
 
 def render(path, color, fn):
@@ -104,9 +96,9 @@ def render(path, color, fn):
 def main():
     base = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "images")
     shapes = {
-        "guide": guide,
+        "home": home,
         "map": map_pin,
-        "checkin": checkin,
+        "mine": mine,
     }
     for name, fn in shapes.items():
         render(os.path.join(base, "tab-%s.png" % name), GREY, fn)

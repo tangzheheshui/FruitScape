@@ -11,7 +11,9 @@ Page({
     monthTotal: 0,
     monthDone: 0,
     monthPct: 0,
-    monthList: []
+    monthList: [],
+    endingSoonNames: '',
+    comingSoonNames: ''
   },
 
   onShow() {
@@ -22,15 +24,20 @@ Page({
 
   refresh() {
     const m = this.data.month;
+    const nextM = (m % 12) + 1;
     const all = fruit.all();
+
     const monthList = fruit.byMonth(m).map(function (f) {
-      return Object.assign({}, f, {
-        season: fruit.seasonLabel(f),
-        checked: checkin.isChecked(f.id)
-      });
+      return Object.assign({}, f, { season: fruit.seasonLabel(f) });
     });
+
+    const cur = fruit.byMonth(m);
+    const next = fruit.byMonth(nextM);
+    const endingSoon = cur.filter(function (f) { return !fruit.inSeason(f, nextM); });
+    const comingSoon = next.filter(function (f) { return !fruit.inSeason(f, m); });
     const yearDone = checkin.count();
-    const monthDone = monthList.filter(function (f) { return f.checked; }).length;
+    const monthDone = cur.filter(function (f) { return checkin.isChecked(f.id); }).length;
+
     this.setData({
       yearTotal: all.length,
       yearDone: yearDone,
@@ -38,18 +45,14 @@ Page({
       monthTotal: monthList.length,
       monthDone: monthDone,
       monthPct: monthList.length ? Math.round(monthDone / monthList.length * 100) : 0,
-      monthList: monthList
+      monthList: monthList,
+      endingSoonNames: endingSoon.map(function (f) { return f.name; }).join('、'),
+      comingSoonNames: comingSoon.map(function (f) { return f.name; }).join('、')
     });
   },
 
-  onToggle(e) {
-    const id = e.currentTarget.dataset.id;
-    const now = checkin.toggle(id);
-    wx.showToast({ title: now ? '已打卡 🍎' : '已取消', icon: 'none' });
-    this.refresh();
-  },
-
-  goMap() {
+  goFruit(e) {
+    getApp().globalData.focusFruitId = e.currentTarget.dataset.id;
     wx.switchTab({ url: '/pages/index/index' });
   },
 
