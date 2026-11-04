@@ -54,18 +54,18 @@
   <view class="detail" wx:if="{{showDetail}}">
     <view class="d-head">
       <text class="d-name">{{detail.name}}</text>
-      <view class="d-toggles">
-        <text class="d-fav {{detailFav ? 'on' : ''}}" bindtap="onToggleFav">{{detailFav ? '♥ 已收藏' : '♡ 收藏'}}</text>
-        <text class="d-check {{detailChecked ? 'on' : ''}}" bindtap="onToggleCheckin">{{detailChecked ? '✓ 已尝' : '＋ 打卡'}}</text>
-      </view>
+      <text class="d-close-x" bindtap="closeDetail">✕</text>
     </view>
     <view class="d-row"><text class="d-label">产地</text><text>{{detail.province}} · {{detail.city}}</text></view>
     <view class="d-row"><text class="d-label">赏味</text><text>{{detail.season}}</text></view>
     <view class="d-row"><text class="d-label">品种</text><text>{{detail.variety}}</text></view>
+    <view class="d-block" wx:if="{{detail.note}}"><text class="d-block-label">赏味</text><text class="d-block-text">{{detail.note}}</text></view>
+    <view class="d-block" wx:if="{{detail.advice}}"><text class="d-block-label">建议</text><text class="d-block-text">{{detail.advice}}</text></view>
     <view class="d-tip">避坑提示：{{detail.tip}}</view>
     <view class="d-actions">
-      <button class="d-contact" open-type="contact" session-from="果实：{{detail.name}}（{{detail.province}}{{detail.city}}）">纠错反馈</button>
-      <view class="d-close" bindtap="closeDetail">知道了</view>
+      <view class="d-big-btn {{detailFav ? 'on' : ''}}" bindtap="onToggleFav">{{detailFav ? '♥ 已收藏' : '♡ 收藏'}}</view>
+      <view class="d-big-btn check {{detailChecked ? 'on' : ''}}" bindtap="onToggleCheckin">{{detailChecked ? '✓ 已尝' : '＋ 打卡'}}</view>
     </view>
+    <button class="d-feedback" open-type="contact" session-from="果实：{{detail.name}}（{{detail.province}}{{detail.city}}）">纠错反馈</button>
   </view>
 </view>

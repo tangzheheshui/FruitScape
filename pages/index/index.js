@@ -1,5 +1,6 @@
 const fruit = require('../../utils/fruit.js');
 const checkin = require('../../utils/checkin.js');
+const fruitDetail = require('../../data/fruit_detail.js');
 
 Page({
   data: {
@@ -102,9 +103,14 @@ Page({
   },
 
   showDetail(f) {
+    const extra = fruitDetail[f.id] || {};
     this.setData({
       showDetail: true,
-      detail: Object.assign({}, f, { season: fruit.seasonLabel(f) }),
+      detail: Object.assign({}, f, {
+        season: fruit.seasonLabel(f),
+        advice: extra.advice || '',
+        note: extra.note || ''
+      }),
       detailFav: fruit.isFavorite(f.id),
       detailChecked: checkin.isChecked(f.id)
     });
