@@ -108,8 +108,9 @@ Page({
       showDetail: true,
       detail: Object.assign({}, f, {
         season: fruit.seasonLabel(f),
-        advice: extra.advice || '',
-        note: extra.note || ''
+        pick: extra.pick || '',
+        note: extra.note || '',
+        identify: extra.identify || ''
       }),
       detailFav: fruit.isFavorite(f.id),
       detailChecked: checkin.isChecked(f.id)
