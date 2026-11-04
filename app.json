@@ -1,7 +1,7 @@
 {
   "pages": [
+    "pages/home/home",
     "pages/index/index",
-    "pages/search/search",
     "pages/favorite/favorite",
     "pages/poster/poster",
     "pages/about/about"
@@ -19,10 +19,9 @@
     "backgroundColor": "#FFFFFF",
     "borderStyle": "black",
     "list": [
-      { "pagePath": "pages/index/index", "text": "首页", "iconPath": "images/tab-home.png", "selectedIconPath": "images/tab-home-active.png" },
-      { "pagePath": "pages/search/search", "text": "搜索", "iconPath": "images/tab-search.png", "selectedIconPath": "images/tab-search-active.png" },
-      { "pagePath": "pages/favorite/favorite", "text": "收藏", "iconPath": "images/tab-favorite.png", "selectedIconPath": "images/tab-favorite-active.png" },
-      { "pagePath": "pages/about/about", "text": "关于", "iconPath": "images/tab-about.png", "selectedIconPath": "images/tab-about-active.png" }
+      { "pagePath": "pages/home/home", "text": "图鉴", "iconPath": "images/tab-guide.png", "selectedIconPath": "images/tab-guide-active.png" },
+      { "pagePath": "pages/index/index", "text": "地图", "iconPath": "images/tab-map.png", "selectedIconPath": "images/tab-map-active.png" },
+      { "pagePath": "pages/favorite/favorite", "text": "打卡", "iconPath": "images/tab-checkin.png", "selectedIconPath": "images/tab-checkin-active.png" }
     ]
   },
   "sitemapLocation": "sitemap.json",

@@ -1,25 +1,42 @@
 const fruit = require('../../utils/fruit.js');
+const checkin = require('../../utils/checkin.js');
 
 Page({
   data: {
-    list: []
+    tab: 'checkin', // 'checkin' 已尝打卡 | 'favorite' 收藏
+    checkins: [],
+    favorites: []
   },
 
   onShow() {
     this.refresh();
   },
 
+  switchTab(e) {
+    this.setData({ tab: e.currentTarget.dataset.tab });
+  },
+
   refresh() {
-    const list = fruit.getFavorites()
+    const c = checkin.all();
+    const checkinList = Object.keys(c)
       .map(function (id) { return fruit.byId(id); })
       .filter(Boolean)
       .map(function (f) { return Object.assign({}, f, { season: fruit.seasonLabel(f) }); });
-    this.setData({ list: list });
+    const favList = fruit.getFavorites()
+      .map(function (id) { return fruit.byId(id); })
+      .filter(Boolean)
+      .map(function (f) { return Object.assign({}, f, { season: fruit.seasonLabel(f) }); });
+    this.setData({ checkins: checkinList, favorites: favList });
   },
 
-  remove(e) {
-    const id = e.currentTarget.dataset.id;
-    fruit.toggleFavorite(id); // 已收藏则取消
+  removeCheckin(e) {
+    checkin.toggle(e.currentTarget.dataset.id); // 已打卡则取消
+    wx.showToast({ title: '已取消打卡', icon: 'none' });
+    this.refresh();
+  },
+
+  removeFavorite(e) {
+    fruit.toggleFavorite(e.currentTarget.dataset.id); // 已收藏则取消
     wx.showToast({ title: '已取消收藏', icon: 'none' });
     this.refresh();
   },

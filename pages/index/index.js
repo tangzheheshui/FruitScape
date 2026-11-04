@@ -1,51 +1,71 @@
 const fruit = require('../../utils/fruit.js');
-
-const app = getApp();
+const checkin = require('../../utils/checkin.js');
 
 Page({
   data: {
     months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
     month: 0,
     monthLabel: '',
+    // 搜索 / 省份筛选（原「搜索」页并入）
+    keyword: '',
+    province: '',
+    provinces: [],
+    listTitle: '',
     // 地图
     mapLat: 33.5,
     mapLng: 104.5,
     mapScale: 4,
     markers: [],
-    // 当月列表
+    // 列表
     list: [],
     // 详情卡片
     showDetail: false,
     detail: null,
-    detailFav: false
+    detailFav: false,
+    detailChecked: false
   },
 
   onLoad() {
-    this.setData({ month: fruit.currentMonth() });
+    this.setData({ month: fruit.currentMonth(), provinces: fruit.provinces() });
     this.refresh();
   },
 
   onShow() {
-    // 从搜索/收藏跳转过来时，定位并高亮指定果实
     const app = getApp();
     if (app.globalData.focusFruitId) {
       const id = app.globalData.focusFruitId;
       app.globalData.focusFruitId = null;
       this.focusFruit(id);
     } else if (this.data.detail) {
-      // 返回本页时刷新收藏状态
-      this.setData({ detailFav: fruit.isFavorite(this.data.detail.id) });
+      this.setData({
+        detailFav: fruit.isFavorite(this.data.detail.id),
+        detailChecked: checkin.isChecked(this.data.detail.id)
+      });
     }
+  },
+
+  /** 按 关键词 / 省份 / 月份 决定当前展示的果实集合 */
+  visibleFruits() {
+    const kw = this.data.keyword.trim();
+    if (kw) return fruit.byName(kw);
+    if (this.data.province) return fruit.byProvince(this.data.province);
+    return fruit.byMonth(this.data.month);
   },
 
   refresh() {
     const m = this.data.month;
-    const list = fruit.byMonth(m).map(function (f) {
+    const kw = this.data.keyword.trim();
+    const hasFilter = !!(kw || this.data.province);
+    const base = this.visibleFruits();
+    const list = base.map(function (f) {
       return Object.assign({}, f, { season: fruit.seasonLabel(f) });
     });
 
-    const markers = fruit.all().map(function (f, i) {
-      const active = fruit.inSeason(f, m);
+    // 地图源：无筛选时展示全部（当季橙/非当季灰）；有筛选时只展示命中的
+    const mapSource = hasFilter ? base : fruit.all();
+    this._markerFruits = mapSource;
+    const markers = mapSource.map(function (f, i) {
+      const active = hasFilter ? true : fruit.inSeason(f, m);
       const marker = {
         id: i,
         latitude: f.lat,
@@ -55,7 +75,6 @@ Page({
         height: 28,
         anchor: { x: 0.5, y: 0.5 }
       };
-      // 只给当季果实加名称标签，避免全国尺度过密，也更突出“当季”
       if (active) {
         marker.label = {
           content: f.name,
@@ -72,24 +91,41 @@ Page({
       return marker;
     });
 
+    let listTitle;
+    if (kw) listTitle = '“' + kw + '” 结果';
+    else if (this.data.province) listTitle = this.data.province + ' · 露天应季';
+    else listTitle = m + '月露天应季';
+
     this.setData({
       list: list,
       markers: markers,
-      monthLabel: m + '月'
+      monthLabel: m + '月',
+      listTitle: listTitle
     });
+  },
+
+  onSearchInput(e) {
+    this.setData({ keyword: e.detail.value });
+    this.refresh();
+  },
+
+  onProvinceTap(e) {
+    const p = e.currentTarget.dataset.p;
+    this.setData({ province: p === this.data.province ? '' : p });
+    this.refresh();
   },
 
   chooseMonth(e) {
     const m = Number(e.currentTarget.dataset.m);
     if (m === this.data.month) return;
-    this.setData({ month: m, showDetail: false });
+    this.setData({ month: m, showDetail: false, keyword: '', province: '' });
     this.refresh();
   },
 
   onMarkerTap(e) {
     // markertap / labeltap 都走这里；兼容不同基础库返回 markerId 的位置
     const idx = (e.detail && e.detail.markerId != null) ? e.detail.markerId : e.markerId;
-    const f = fruit.all()[idx];
+    const f = this._markerFruits && this._markerFruits[idx];
     if (f) this.showDetail(f);
   },
 
@@ -105,11 +141,7 @@ Page({
   focusFruit(id) {
     const f = fruit.byId(id);
     if (!f) return;
-    this.setData({
-      mapLat: f.lat,
-      mapLng: f.lng,
-      mapScale: 8
-    });
+    this.setData({ mapLat: f.lat, mapLng: f.lng, mapScale: 8 });
     this.showDetail(f);
   },
 
@@ -117,7 +149,8 @@ Page({
     this.setData({
       showDetail: true,
       detail: Object.assign({}, f, { season: fruit.seasonLabel(f) }),
-      detailFav: fruit.isFavorite(f.id)
+      detailFav: fruit.isFavorite(f.id),
+      detailChecked: checkin.isChecked(f.id)
     });
   },
 
@@ -133,14 +166,19 @@ Page({
     wx.showToast({ title: nowFav ? '已收藏' : '已取消收藏', icon: 'none' });
   },
 
+  onToggleCheckin() {
+    const d = this.data.detail;
+    if (!d) return;
+    const now = checkin.toggle(d.id);
+    this.setData({ detailChecked: now });
+    wx.showToast({ title: now ? '已打卡 🍎' : '已取消打卡', icon: 'none' });
+  },
+
   goPoster() {
     wx.navigateTo({ url: '/pages/poster/poster?month=' + this.data.month });
   },
 
   onShareAppMessage() {
-    return {
-      title: '看露天应季水果，拒绝大棚反季',
-      path: '/pages/index/index'
-    };
+    return { title: '看露天应季水果，拒绝大棚反季', path: '/pages/home/home' };
   }
 });

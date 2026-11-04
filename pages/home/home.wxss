@@ -1,0 +1,95 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #f6faf0;
+}
+
+.header {
+  padding: 28rpx 32rpx 16rpx;
+}
+.brand { font-size: 44rpx; font-weight: 700; color: #2e3a2e; }
+.slogan { margin-top: 6rpx; font-size: 24rpx; color: #9aa39a; }
+
+.cards {
+  display: flex;
+  gap: 20rpx;
+  padding: 0 24rpx;
+}
+.card {
+  flex: 1;
+  background: #ffffff;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.03);
+}
+.card.orange { background: #fbf4ea; }
+.c-label { font-size: 24rpx; color: #8a948a; }
+.c-num { margin-top: 8rpx; font-size: 52rpx; font-weight: 700; color: #e8853c; }
+.c-total { font-size: 28rpx; font-weight: 400; color: #9aa39a; }
+.c-desc { font-size: 22rpx; color: #9aa39a; margin-top: 4rpx; }
+.bar {
+  margin-top: 14rpx;
+  height: 12rpx;
+  border-radius: 6rpx;
+  background: #edf2e8;
+  overflow: hidden;
+}
+.bar-fill { height: 100%; background: #6fa95c; border-radius: 6rpx; }
+
+.list-head {
+  padding: 24rpx 32rpx 12rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2e3a2e;
+}
+.list { flex: 1; min-height: 0; }
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  margin: 10rpx 24rpx;
+  padding: 20rpx 24rpx;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.03);
+}
+.i-left { flex: 1; }
+.i-name { font-size: 30rpx; font-weight: 600; color: #2e3a2e; }
+.i-tag {
+  font-size: 20rpx;
+  color: #6fa95c;
+  background: #edf5e8;
+  padding: 2rpx 10rpx;
+  border-radius: 6rpx;
+  margin-left: 8rpx;
+}
+.i-sub { color: #8a948a; font-size: 24rpx; margin-top: 6rpx; }
+.i-btn {
+  flex-shrink: 0;
+  margin-left: 20rpx;
+  padding: 12rpx 24rpx;
+  border-radius: 40rpx;
+  font-size: 26rpx;
+  color: #e8853c;
+  background: #fbf4ea;
+}
+.i-btn.on { color: #ffffff; background: #e8853c; }
+.empty { text-align: center; color: #9aa39a; font-size: 26rpx; padding: 60rpx 0; }
+
+.share {
+  margin: 20rpx 24rpx 32rpx;
+  text-align: center;
+  background: #e8853c;
+  color: #ffffff;
+  font-size: 30rpx;
+  font-weight: 600;
+  padding: 24rpx 0;
+  border-radius: 44rpx;
+}
+.footer {
+  text-align: center;
+  color: #9aa39a;
+  font-size: 24rpx;
+  padding: 0 0 40rpx;
+}

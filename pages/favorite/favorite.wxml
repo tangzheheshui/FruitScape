@@ -1,16 +1,28 @@
 <view class="page">
-  <scroll-view scroll-y class="list" wx:if="{{list.length > 0}}">
-    <view class="item" wx:for="{{list}}" wx:key="id" data-id="{{item.id}}" bindtap="goFruit">
+  <view class="tabs">
+    <view class="tab {{tab === 'checkin' ? 'active' : ''}}" data-tab="checkin" bindtap="switchTab">已尝打卡（{{checkins.length}}）</view>
+    <view class="tab {{tab === 'favorite' ? 'active' : ''}}" data-tab="favorite" bindtap="switchTab">想尝收藏（{{favorites.length}}）</view>
+  </view>
+
+  <scroll-view scroll-y class="list" wx:if="{{tab === 'checkin'}}">
+    <view class="item" wx:for="{{checkins}}" wx:key="id" data-id="{{item.id}}" bindtap="goFruit">
       <view class="item-body">
-        <view class="item-name">{{item.name}}</view>
+        <view class="item-name">{{item.name}} <text class="tag">已尝</text></view>
         <view class="item-sub">{{item.province}} · {{item.city}} · {{item.season}}</view>
       </view>
-      <view class="del" data-id="{{item.id}}" catchtap="remove">取消</view>
+      <view class="del" data-id="{{item.id}}" catchtap="removeCheckin">取消打卡</view>
     </view>
+    <view wx:if="{{checkins.length === 0}}" class="empty-state"><text class="emoji">🍎</text>还没有打卡，去图鉴首页尝一个吧</view>
   </scroll-view>
 
-  <view class="empty-state" wx:if="{{list.length === 0}}">
-    <text class="emoji">♡</text>
-    还没有收藏，去首页看看当季果实吧
-  </view>
+  <scroll-view scroll-y class="list" wx:if="{{tab === 'favorite'}}">
+    <view class="item" wx:for="{{favorites}}" wx:key="id" data-id="{{item.id}}" bindtap="goFruit">
+      <view class="item-body">
+        <view class="item-name">{{item.name}} <text class="tag fav">想尝</text></view>
+        <view class="item-sub">{{item.province}} · {{item.city}} · {{item.season}}</view>
+      </view>
+      <view class="del" data-id="{{item.id}}" catchtap="removeFavorite">取消收藏</view>
+    </view>
+    <view wx:if="{{favorites.length === 0}}" class="empty-state"><text class="emoji">♡</text>还没有收藏，去地图页点个果子收藏吧</view>
+  </scroll-view>
 </view>

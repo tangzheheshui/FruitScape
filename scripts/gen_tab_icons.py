@@ -1,4 +1,4 @@
-"""Generate tabBar icons (4 tabs x normal/selected) as anti-aliased PNGs.
+"""Generate tabBar icons (3 tabs x normal/selected) as anti-aliased PNGs.
 
 纯标准库（zlib/struct），无第三方依赖。形状用归一化坐标的几何判定绘制，
 再用 3x3 超采样做边缘抗锯齿。
@@ -46,40 +46,26 @@ def rect(px, py, x0, y0, x1, y1):
 
 # ---- 形状定义（归一化坐标 0..1）----
 
-def home(x, y):
-    roof = point_in_poly(x, y, [(0.5, 0.10), (0.06, 0.50), (0.94, 0.50)])
-    body = rect(x, y, 0.20, 0.50, 0.80, 0.86)
-    door = rect(x, y, 0.42, 0.62, 0.58, 0.86)
-    return (roof or body) and not door
+def guide(x, y):
+    """图鉴：一本打开的书（中间中缝挖空）"""
+    body = rect(x, y, 0.26, 0.18, 0.74, 0.82)
+    spine = rect(x, y, 0.48, 0.18, 0.52, 0.82)
+    return body and not spine
 
 
-def search(x, y):
-    ring = 0.17 <= dist(x, y, 0.42, 0.42) <= 0.27
-    handle = seg_dist(x, y, 0.62, 0.62, 0.90, 0.90) <= 0.055
-    return ring or handle
+def map_pin(x, y):
+    """地图：定位图钉"""
+    body = dist(x, y, 0.5, 0.40) <= 0.30
+    tri = point_in_poly(x, y, [(0.26, 0.60), (0.74, 0.60), (0.50, 0.90)])
+    hole = dist(x, y, 0.5, 0.40) <= 0.11
+    return (body or tri) and not hole
 
 
-def _star_poly(cx, cy, R, r):
-    pts = []
-    for i in range(10):
-        a = -math.pi / 2 + i * math.pi / 5
-        rr = R if i % 2 == 0 else r
-        pts.append((cx + rr * math.cos(a), cy + rr * math.sin(a)))
-    return pts
-
-
-STAR = _star_poly(0.5, 0.52, 0.36, 0.155)
-
-
-def favorite(x, y):
-    return point_in_poly(x, y, STAR)
-
-
-def about(x, y):
-    ring = 0.30 <= dist(x, y, 0.5, 0.5) <= 0.38
-    dot = dist(x, y, 0.5, 0.36) <= 0.07
-    bar = rect(x, y, 0.455, 0.50, 0.545, 0.68)
-    return ring or dot or bar
+def checkin(x, y):
+    """打卡：对勾"""
+    a = seg_dist(x, y, 0.26, 0.52, 0.44, 0.70) <= 0.075
+    b = seg_dist(x, y, 0.44, 0.70, 0.78, 0.30) <= 0.075
+    return a or b
 
 
 def render(path, color, fn):
@@ -118,10 +104,9 @@ def render(path, color, fn):
 def main():
     base = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "images")
     shapes = {
-        "home": home,
-        "search": search,
-        "favorite": favorite,
-        "about": about,
+        "guide": guide,
+        "map": map_pin,
+        "checkin": checkin,
     }
     for name, fn in shapes.items():
         render(os.path.join(base, "tab-%s.png" % name), GREY, fn)

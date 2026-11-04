@@ -1,5 +1,5 @@
 <view class="page">
-  <!-- 月份选择器 -->
+  <!-- 月份选择 -->
   <view class="month-bar">
     <scroll-view scroll-x class="month-scroll" scroll-into-view="m{{month}}" scroll-with-animation>
       <view
@@ -12,6 +12,20 @@
       >{{item}}月</view>
     </scroll-view>
   </view>
+
+  <!-- 搜索 + 省份筛选（原搜索页并入） -->
+  <view class="search-bar">
+    <input class="search-input" placeholder="搜水果 / 品种 / 产地" value="{{keyword}}" bindinput="onSearchInput" confirm-type="search" />
+  </view>
+  <scroll-view scroll-x class="province-scroll">
+    <view
+      wx:for="{{provinces}}"
+      wx:key="name"
+      class="province-item {{item.name === province ? 'active' : ''}}"
+      data-p="{{item.name}}"
+      bindtap="onProvinceTap"
+    >{{item.name}}</view>
+  </scroll-view>
 
   <!-- 地图 -->
   <map
@@ -26,15 +40,9 @@
     bindlabeltap="onMarkerTap"
   ></map>
 
-  <!-- 海报入口 -->
-  <view class="poster-bar" bindtap="goPoster">
-    <text>🖼 生成「{{monthLabel}}露天应季清单」海报，发小红书</text>
-    <text class="arrow">›</text>
-  </view>
-
-  <!-- 当月列表 -->
+  <!-- 列表 -->
   <view class="list-panel">
-    <view class="list-head">当月露天应季 <text class="c-orange">{{list.length}}</text> 种</view>
+    <view class="list-head">{{listTitle}} <text class="c-orange">{{list.length}}</text> 种</view>
     <scroll-view scroll-y class="list">
       <view
         class="list-item"
@@ -48,10 +56,9 @@
           <text class="li-tag">露天</text>
         </view>
         <view class="li-sub">{{item.province}} · {{item.city}} · {{item.season}}</view>
-        <view class="li-tip">避坑：{{item.tip}}</view>
       </view>
       <view class="empty-state" wx:if="{{list.length === 0}}">
-        <text class="emoji">🍂</text>这个月暂时没有录入露天果实
+        <text class="emoji">🍂</text>没有找到相关果实
       </view>
     </scroll-view>
   </view>
@@ -61,7 +68,10 @@
   <view class="detail" wx:if="{{showDetail}}">
     <view class="d-head">
       <text class="d-name">{{detail.name}}</text>
-      <text class="d-fav {{detailFav ? 'on' : ''}}" bindtap="onToggleFav">{{detailFav ? '♥ 已收藏' : '♡ 收藏'}}</text>
+      <view class="d-toggles">
+        <text class="d-fav {{detailFav ? 'on' : ''}}" bindtap="onToggleFav">{{detailFav ? '♥ 已收藏' : '♡ 收藏'}}</text>
+        <text class="d-check {{detailChecked ? 'on' : ''}}" bindtap="onToggleCheckin">{{detailChecked ? '✓ 已尝' : '＋ 打卡'}}</text>
+      </view>
     </view>
     <view class="d-row"><text class="d-label">产地</text><text>{{detail.province}} · {{detail.city}}</text></view>
     <view class="d-row"><text class="d-label">赏味</text><text>{{detail.season}}</text></view>

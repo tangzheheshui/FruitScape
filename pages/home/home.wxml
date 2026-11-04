@@ -1,0 +1,36 @@
+<view class="page">
+  <view class="header">
+    <view class="brand">时令果册</view>
+    <view class="slogan">看露天应季水果 · 拒绝大棚反季</view>
+  </view>
+
+  <view class="cards">
+    <view class="card">
+      <view class="c-label">全年图鉴</view>
+      <view class="c-num">{{yearDone}}<text class="c-total">/{{yearTotal}}</text></view>
+      <view class="c-desc">已尝 {{yearDone}} 种露天应季水果</view>
+      <view class="bar"><view class="bar-fill" style="width:{{yearPct}}%"></view></view>
+    </view>
+    <view class="card orange">
+      <view class="c-label">{{monthLabel}}应季</view>
+      <view class="c-num">{{monthDone}}<text class="c-total">/{{monthTotal}}</text></view>
+      <view class="c-desc">本月已打卡</view>
+      <view class="bar"><view class="bar-fill" style="width:{{monthPct}}%"></view></view>
+    </view>
+  </view>
+
+  <view class="list-head">{{monthLabel}}露天应季 · 点击打卡</view>
+  <scroll-view scroll-y class="list">
+    <view class="item" wx:for="{{monthList}}" wx:key="id">
+      <view class="i-left">
+        <view class="i-name">{{item.name}} <text class="i-tag">露天</text></view>
+        <view class="i-sub">{{item.province}} · {{item.city}} · {{item.season}}</view>
+      </view>
+      <view class="i-btn {{item.checked ? 'on' : ''}}" data-id="{{item.id}}" bindtap="onToggle">{{item.checked ? '✓ 已尝' : '＋ 打卡'}}</view>
+    </view>
+    <view wx:if="{{monthList.length === 0}}" class="empty">这个月暂时没有录入露天果实 🍂</view>
+  </scroll-view>
+
+  <view class="share" bindtap="goPoster">🖼 生成「{{monthLabel}}打卡清单」分享图</view>
+  <view class="footer" bindtap="goAbout">关于 · 免责声明 · 意见反馈</view>
+</view>
