@@ -2,7 +2,7 @@
   <view class="slogan">看露天应季水果 · 拒绝大棚反季</view>
 
   <!-- 进度卡片 -->
-  <view class="card">
+  <view class="card card-progress">
     <view class="rings">
       <view class="ring-wrap">
         <view class="ring" style="background: conic-gradient(#E8853C 0% {{yearPct}}%, #E9F0E4 {{yearPct}}% 100%);">
@@ -24,7 +24,7 @@
   </view>
 
   <!-- 即将上市 -->
-  <view class="card" wx:if="{{comingSoonNames}}">
+  <view class="card card-tips" wx:if="{{comingSoonNames}}">
     <view class="card-title">🌱 即将上市</view>
     <view class="card-body">{{comingSoonNames}}</view>
   </view>
