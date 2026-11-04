@@ -34,6 +34,6 @@
     <view wx:if="{{monthList.length === 0}}" class="empty">这个月暂时没有录入露天果实 🍂</view>
   </scroll-view>
 
-  <view class="share" bindtap="goPoster">🖼 生成「{{monthLabel}}打卡清单」分享图</view>
+  <view class="share" bindtap="goPoster">生成分享图</view>
   <view class="footer" bindtap="goAbout">关于 · 免责声明 · 意见反馈</view>
 </view>

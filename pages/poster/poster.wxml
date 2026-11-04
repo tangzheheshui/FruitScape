@@ -1,6 +1,4 @@
 <view class="poster-page">
-  <view class="tip-bar">预览 · 保存后可直接发小红书 / 朋友圈</view>
-
   <view class="canvas-wrap" style="width: {{W}}px; height: {{canvasH}}px;">
     <canvas type="2d" id="poster" style="width: {{W}}px; height: {{canvasH}}px;"></canvas>
   </view>
