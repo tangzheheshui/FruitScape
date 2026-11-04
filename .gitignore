@@ -11,3 +11,6 @@ Thumbs.db
 .idea/
 .vscode/
 *.log
+
+# 生成的二维码（分享用，不入库）
+repo-qrcode.png
