@@ -12,7 +12,6 @@ Page({
     monthDone: 0,
     monthPct: 0,
     monthList: [],
-    endingSoonNames: '',
     comingSoonNames: ''
   },
 
@@ -33,7 +32,6 @@ Page({
 
     const cur = fruit.byMonth(m);
     const next = fruit.byMonth(nextM);
-    const endingSoon = cur.filter(function (f) { return !fruit.inSeason(f, nextM); });
     const comingSoon = next.filter(function (f) { return !fruit.inSeason(f, m); });
     const yearDone = checkin.count();
     const monthDone = cur.filter(function (f) { return checkin.isChecked(f.id); }).length;
@@ -46,7 +44,6 @@ Page({
       monthDone: monthDone,
       monthPct: monthList.length ? Math.round(monthDone / monthList.length * 100) : 0,
       monthList: monthList,
-      endingSoonNames: endingSoon.map(function (f) { return f.name; }).join('、'),
       comingSoonNames: comingSoon.map(function (f) { return f.name; }).join('、')
     });
   },

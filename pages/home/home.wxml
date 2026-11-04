@@ -20,9 +20,8 @@
   </view>
 
   <!-- 提醒 -->
-  <view class="tips" wx:if="{{endingSoonNames || comingSoonNames}}">
-    <view class="tip-line" wx:if="{{endingSoonNames}}">⏳ 即将过季：{{endingSoonNames}}</view>
-    <view class="tip-line" wx:if="{{comingSoonNames}}">🌱 即将上市：{{comingSoonNames}}</view>
+  <view class="tips" wx:if="{{comingSoonNames}}">
+    <view class="tip-line">🌱 即将上市：{{comingSoonNames}}</view>
   </view>
 
   <view class="list-head">{{monthLabel}}露天应季（{{monthList.length}} 种）</view>

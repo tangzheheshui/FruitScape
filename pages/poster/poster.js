@@ -47,9 +47,10 @@ Page({
 
     const endingSoon = fruit.byMonth(m).filter(function (f) { return !fruit.inSeason(f, nextM); });
     const comingSoon = fruit.byMonth(nextM).filter(function (f) { return !fruit.inSeason(f, m); });
-    const endingSoonNames = endingSoon.map(function (f) { return f.name; }).join('、');
+    this._endingIds = {};
+    endingSoon.forEach(function (f) { this._endingIds[f.id] = true; }, this);
     const comingSoonNames = comingSoon.map(function (f) { return f.name; }).join('、');
-    const tipsCount = (endingSoonNames ? 1 : 0) + (comingSoonNames ? 1 : 0);
+    const tipsCount = comingSoonNames ? 1 : 0;
 
     const rows = Math.max(1, Math.ceil(monthTotal / 3));
     const H = 250 + tipsCount * 26 + rows * 34 + 130;
@@ -61,7 +62,6 @@ Page({
       yearDone: yearDone,
       monthTotal: monthTotal,
       monthDone: monthDone,
-      endingSoonNames: endingSoonNames,
       comingSoonNames: comingSoonNames,
       canvasH: H
     });
@@ -146,11 +146,6 @@ Page({
     let y = cardY + cardH + 22;
     ctx.textAlign = 'left';
     ctx.font = '12px sans-serif';
-    if (d.endingSoonNames) {
-      ctx.fillStyle = '#B08A5C';
-      ctx.fillText('⏳ 即将过季：' + d.endingSoonNames, 28, y);
-      y += 26;
-    }
     if (d.comingSoonNames) {
       ctx.fillStyle = '#6FA95C';
       ctx.fillText('🌱 即将上市：' + d.comingSoonNames, 28, y);
@@ -161,27 +156,29 @@ Page({
     // 当月果实网格（3 列，已打卡打 ✓）
     const cellW = (W - 48 - 16) / 3;
     const cellH = 34;
-    d.monthList.forEach(function (f, i) {
+    d.monthList.forEach((f, i) => {
       const col = i % 3;
       const row = Math.floor(i / 3);
       const cx = 24 + col * (cellW + 8);
       const cy = y + row * cellH;
       const tasted = checkin.isChecked(f.id);
+      const ending = this._endingIds && this._endingIds[f.id];
       ctx.fillStyle = tasted ? '#FBF4EA' : '#FFFFFF';
       roundRect(ctx, cx, cy, cellW, cellH - 8, 10);
       ctx.fill();
       ctx.textAlign = 'left';
       ctx.font = '11px sans-serif';
+      let label = f.name;
+      if (tasted) label = '✓ ' + label;
+      else label = (EMOJI[f.category] || '🍎') + ' ' + label;
+      if (ending) label += ' ⏳';
+      ctx.fillStyle = tasted ? '#E8853C' : '#5A645A';
+      ctx.fillText(label, cx + 8, cy + 21);
       if (tasted) {
-        ctx.fillStyle = '#E8853C';
-        ctx.fillText('✓ ' + f.name, cx + 8, cy + 21);
         ctx.strokeStyle = '#E8853C';
         ctx.lineWidth = 1.5;
         roundRect(ctx, cx, cy, cellW, cellH - 8, 10);
         ctx.stroke();
-      } else {
-        ctx.fillStyle = '#5A645A';
-        ctx.fillText((EMOJI[f.category] || '🍎') + ' ' + f.name, cx + 8, cy + 21);
       }
     });
     const rows = Math.max(1, Math.ceil(d.monthList.length / 3));
