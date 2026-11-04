@@ -36,6 +36,7 @@ Page({
 
   onLoad(q) {
     const m = (q && q.month) ? Number(q.month) : fruit.currentMonth();
+    const nextM = (m % 12) + 1;
     const monthList = fruit.byMonth(m).map(function (f) {
       return Object.assign({}, f, { season: fruit.seasonLabel(f) });
     });
@@ -43,8 +44,16 @@ Page({
     const yearDone = checkin.count();
     const monthTotal = monthList.length;
     const monthDone = monthList.filter(function (f) { return checkin.isChecked(f.id); }).length;
+
+    const endingSoon = fruit.byMonth(m).filter(function (f) { return !fruit.inSeason(f, nextM); });
+    const comingSoon = fruit.byMonth(nextM).filter(function (f) { return !fruit.inSeason(f, m); });
+    const endingSoonNames = endingSoon.map(function (f) { return f.name; }).join('、');
+    const comingSoonNames = comingSoon.map(function (f) { return f.name; }).join('、');
+    const tipsCount = (endingSoonNames ? 1 : 0) + (comingSoonNames ? 1 : 0);
+
     const rows = Math.max(1, Math.ceil(monthTotal / 3));
-    const H = 252 + rows * 34 + 110;
+    const H = 250 + tipsCount * 26 + rows * 34 + 130;
+
     this.setData({
       month: m,
       monthList: monthList,
@@ -52,6 +61,8 @@ Page({
       yearDone: yearDone,
       monthTotal: monthTotal,
       monthDone: monthDone,
+      endingSoonNames: endingSoonNames,
+      comingSoonNames: comingSoonNames,
       canvasH: H
     });
     this.initCanvas(H);
@@ -71,12 +82,29 @@ Page({
         ctx.scale(dpr, dpr);
         this.canvas = canvas;
         this.ctx = ctx;
-        // 尝试加载小程序码（若已生成 images/qrcode.png）
         const img = canvas.createImage();
         img.onload = () => { this.qrImg = img; this.draw(); };
         img.onerror = () => { this.qrImg = null; this.draw(); };
         img.src = '/images/qrcode.png';
       });
+  },
+
+  drawRing(ctx, cx, cy, r, pct, text) {
+    ctx.lineWidth = 9;
+    ctx.strokeStyle = '#E9F0E4';
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.stroke();
+    if (pct > 0) {
+      ctx.strokeStyle = '#E8853C';
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * pct);
+      ctx.stroke();
+    }
+    ctx.fillStyle = '#2E3A2E';
+    ctx.font = 'bold 14px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(text, cx, cy + 5);
   },
 
   draw() {
@@ -99,43 +127,38 @@ Page({
     ctx.font = '13px sans-serif';
     ctx.fillText('看露天应季水果 · 拒绝大棚反季', W / 2, 88);
 
-    // 进度卡片（白色圆角，叠在头带下）
-    const cardX = 24, cardW = W - 48, cardY = 102, cardH = 120;
+    // 进度卡片：两个进度环（全年 + 当月）
+    const cardX = 24, cardW = W - 48, cardY = 102, cardH = 150;
     ctx.fillStyle = '#FFFFFF';
     roundRect(ctx, cardX, cardY, cardW, cardH, 16);
     ctx.fill();
-
-    // 全年进度圆环
-    const ringCx = cardX + 62, ringCy = cardY + cardH / 2, ringR = 38;
-    const pct = d.yearTotal ? d.yearDone / d.yearTotal : 0;
-    ctx.lineWidth = 9;
-    ctx.strokeStyle = '#E9F0E4';
-    ctx.beginPath();
-    ctx.arc(ringCx, ringCy, ringR, 0, Math.PI * 2);
-    ctx.stroke();
-    if (pct > 0) {
-      ctx.strokeStyle = '#E8853C';
-      ctx.beginPath();
-      ctx.arc(ringCx, ringCy, ringR, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * pct);
-      ctx.stroke();
-    }
-    ctx.fillStyle = '#2E3A2E';
-    ctx.font = 'bold 17px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText(d.yearDone + '/' + d.yearTotal, ringCx, ringCy + 6);
-
-    // 右侧文字
-    ctx.textAlign = 'left';
-    ctx.fillStyle = '#2E3A2E';
-    ctx.font = 'bold 15px sans-serif';
-    ctx.fillText('全年已尝', cardX + 128, ringCy - 14);
+    const ringR = 34, ringY = cardY + 58;
+    const r1x = cardX + 66, r2x = cardX + cardW - 66;
+    this.drawRing(ctx, r1x, ringY, ringR, d.yearTotal ? d.yearDone / d.yearTotal : 0, d.yearDone + '/' + d.yearTotal);
+    this.drawRing(ctx, r2x, ringY, ringR, d.monthTotal ? d.monthDone / d.monthTotal : 0, d.monthDone + '/' + d.monthTotal);
     ctx.fillStyle = '#8A948A';
     ctx.font = '12px sans-serif';
-    ctx.fillText(d.month + '月应季 ' + d.monthTotal + ' 种', cardX + 128, ringCy + 8);
-    ctx.fillText('已尝 ' + d.monthDone + ' 种', cardX + 128, ringCy + 28);
+    ctx.textAlign = 'center';
+    ctx.fillText('全年已尝', r1x, cardY + cardH - 18);
+    ctx.fillText('当月已尝', r2x, cardY + cardH - 18);
 
-    // 当月果实网格（3 列，已尝高亮）
-    let y = cardY + cardH + 30;
+    // 即将过季 / 即将上市
+    let y = cardY + cardH + 22;
+    ctx.textAlign = 'left';
+    ctx.font = '12px sans-serif';
+    if (d.endingSoonNames) {
+      ctx.fillStyle = '#B08A5C';
+      ctx.fillText('⏳ 即将过季：' + d.endingSoonNames, 28, y);
+      y += 26;
+    }
+    if (d.comingSoonNames) {
+      ctx.fillStyle = '#6FA95C';
+      ctx.fillText('🌱 即将上市：' + d.comingSoonNames, 28, y);
+      y += 26;
+    }
+    y += 10;
+
+    // 当月果实网格（3 列，已打卡打 ✓）
     const cellW = (W - 48 - 16) / 3;
     const cellH = 34;
     d.monthList.forEach(function (f, i) {
@@ -148,14 +171,17 @@ Page({
       roundRect(ctx, cx, cy, cellW, cellH - 8, 10);
       ctx.fill();
       ctx.textAlign = 'left';
-      ctx.fillStyle = tasted ? '#B08A5C' : '#5A645A';
       ctx.font = '11px sans-serif';
-      ctx.fillText((EMOJI[f.category] || '🍎') + ' ' + f.name, cx + 8, cy + 21);
       if (tasted) {
+        ctx.fillStyle = '#E8853C';
+        ctx.fillText('✓ ' + f.name, cx + 8, cy + 21);
         ctx.strokeStyle = '#E8853C';
         ctx.lineWidth = 1.5;
         roundRect(ctx, cx, cy, cellW, cellH - 8, 10);
         ctx.stroke();
+      } else {
+        ctx.fillStyle = '#5A645A';
+        ctx.fillText((EMOJI[f.category] || '🍎') + ' ' + f.name, cx + 8, cy + 21);
       }
     });
     const rows = Math.max(1, Math.ceil(d.monthList.length / 3));
