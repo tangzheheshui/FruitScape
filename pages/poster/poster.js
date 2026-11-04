@@ -52,7 +52,7 @@ Page({
     const comingSoonNames = comingSoon.map(function (f) { return f.name; }).join('、');
     const tipsCount = comingSoonNames ? 1 : 0;
 
-    const rows = Math.max(1, Math.ceil(monthTotal / 3));
+    const rows = Math.max(1, Math.ceil(monthTotal / 2));
     const H = 250 + tipsCount * 26 + rows * 34 + 130;
 
     this.setData({
@@ -154,11 +154,11 @@ Page({
     y += 10;
 
     // 当月果实网格（3 列，已打卡打 ✓）
-    const cellW = (W - 48 - 16) / 3;
+    const cellW = (W - 48 - 8) / 2;
     const cellH = 34;
     d.monthList.forEach((f, i) => {
-      const col = i % 3;
-      const row = Math.floor(i / 3);
+      const col = i % 2;
+      const row = Math.floor(i / 2);
       const cx = 24 + col * (cellW + 8);
       const cy = y + row * cellH;
       const tasted = checkin.isChecked(f.id);
@@ -168,7 +168,7 @@ Page({
       ctx.fill();
       ctx.textAlign = 'left';
       ctx.font = '11px sans-serif';
-      let label = f.variety || f.name;
+      let label = f.city + ' ' + (f.variety || f.name);
       if (tasted) label = '✓ ' + label;
       else label = (EMOJI[f.category] || '🍎') + ' ' + label;
       if (ending) label += ' ⏳';
@@ -181,7 +181,7 @@ Page({
         ctx.stroke();
       }
     });
-    const rows = Math.max(1, Math.ceil(d.monthList.length / 3));
+    const rows = Math.max(1, Math.ceil(d.monthList.length / 2));
     y += rows * cellH + 24;
 
     // 小程序码 + 引导
