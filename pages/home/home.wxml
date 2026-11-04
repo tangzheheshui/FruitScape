@@ -33,8 +33,8 @@
   <view class="card">
     <view class="card-title">{{monthLabel}}露天应季（{{monthList.length}} 种）</view>
     <view class="item" wx:for="{{monthList}}" wx:key="id" data-id="{{item.id}}" bindtap="goFruit">
-      <view class="i-name">{{item.name}} <text class="i-tag">露天</text></view>
-      <view class="i-sub">{{item.province}} · {{item.city}} · {{item.season}}</view>
+      <view class="i-name">{{item.city}} {{item.variety}} <text class="i-tag">露天</text></view>
+      <view class="i-sub">{{item.name}} · {{item.province}} · {{item.season}}</view>
     </view>
     <view wx:if="{{monthList.length === 0}}" class="empty">这个月暂时没有录入露天果实 🍂</view>
   </view>

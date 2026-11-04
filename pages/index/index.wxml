@@ -13,7 +13,7 @@
     </scroll-view>
   </view>
 
-  <!-- 地图 -->
+  <!-- 地图（全屏） -->
   <map
     id="fruitMap"
     class="map"
@@ -26,46 +26,34 @@
     bindlabeltap="onMarkerTap"
   ></map>
 
-  <!-- 列表 -->
-  <view class="list-panel">
-    <view class="list-head">{{monthLabel}}露天应季 <text class="c-orange">{{list.length}}</text> 种</view>
-    <scroll-view scroll-y class="list">
-      <view
-        class="list-item"
-        wx:for="{{list}}"
-        wx:key="id"
-        data-id="{{item.id}}"
-        bindtap="onListTap"
-      >
-        <view class="li-main">
-          <text class="li-name">{{item.name}}</text>
-          <text class="li-tag">露天</text>
-        </view>
-        <view class="li-sub">{{item.province}} · {{item.city}} · {{item.season}}</view>
-      </view>
-      <view class="empty-state" wx:if="{{list.length === 0}}">
-        <text class="emoji">🍂</text>这个月暂时没有录入露天果实
-      </view>
-    </scroll-view>
-  </view>
-
   <!-- 详情卡片 -->
   <view class="mask" wx:if="{{showDetail}}" bindtap="closeDetail"></view>
   <view class="detail" wx:if="{{showDetail}}">
     <view class="d-head">
-      <text class="d-name">{{detail.name}}</text>
+      <view class="d-title">
+        <text class="d-emoji">{{detailEmoji}}</text>
+        <view class="d-title-r">
+          <text class="d-name">{{detail.name}}</text>
+          <text class="d-variety">{{detail.variety}}</text>
+        </view>
+      </view>
       <text class="d-close-x" bindtap="closeDetail">✕</text>
     </view>
-    <view class="d-row"><text class="d-label">产地</text><text>{{detail.province}} · {{detail.city}}</text></view>
-    <view class="d-row"><text class="d-label">时令</text><text>{{detail.season}}</text></view>
-    <view class="d-row"><text class="d-label">品种</text><text>{{detail.variety}}</text></view>
-    <view class="d-block" wx:if="{{detail.note}}"><text class="d-block-label">赏味</text><text class="d-block-text">{{detail.note}}</text></view>
-    <view class="d-block" wx:if="{{detail.pick}}"><text class="d-block-label">挑选</text><text class="d-block-text">{{detail.pick}}</text></view>
-    <view class="d-block" wx:if="{{detail.identify}}"><text class="d-block-label">鉴别</text><text class="d-block-text">{{detail.identify}}</text></view>
-    <view class="d-tip">避坑提示：{{detail.tip}}</view>
+
+    <view class="d-rows">
+      <view class="d-row"><text class="d-label">产地</text><text>{{detail.province}} · {{detail.city}}</text></view>
+      <view class="d-row"><text class="d-label">时令</text><text>{{detail.season}}</text></view>
+    </view>
+
+    <view class="d-sec" wx:if="{{detail.note}}"><view class="d-sec-title">赏味</view><view class="d-sec-text">{{detail.note}}</view></view>
+    <view class="d-sec" wx:if="{{detail.pick}}"><view class="d-sec-title">挑选</view><view class="d-sec-text">{{detail.pick}}</view></view>
+    <view class="d-sec" wx:if="{{detail.identify}}"><view class="d-sec-title">鉴别</view><view class="d-sec-text">{{detail.identify}}</view></view>
+
+    <view class="d-tip">⚠️ 避坑：{{detail.tip}}</view>
+
     <view class="d-actions">
       <view class="d-big-btn {{detailFav ? 'on' : ''}}" bindtap="onToggleFav">{{detailFav ? '♥ 已收藏' : '♡ 收藏'}}</view>
-      <view class="d-big-btn check {{detailChecked ? 'on' : ''}}" bindtap="onToggleCheckin">{{detailChecked ? '✓ 已尝' : '＋ 打卡'}}</view>
+      <view class="d-big-btn check {{detailChecked ? 'on' : ''}} {{canCheckin ? '' : 'disabled'}}" bindtap="onToggleCheckin">{{detailChecked ? '✓ 已尝' : '＋ 打卡'}}</view>
     </view>
     <button class="d-feedback" open-type="contact" session-from="果实：{{detail.name}}（{{detail.province}}{{detail.city}}）">纠错反馈</button>
   </view>

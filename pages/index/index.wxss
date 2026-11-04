@@ -25,47 +25,12 @@
 .month-item:last-child { margin-right: 20rpx; }
 .month-item.active { background: #e8853c; color: #ffffff; font-weight: 600; }
 
-/* 地图（加大面积） */
+/* 地图（填满剩余空间） */
 .map {
-  width: 100%;
-  height: 52vh;
-}
-
-/* 列表（卡片缩小） */
-.list-panel {
   flex: 1;
-  display: flex;
-  flex-direction: column;
+  width: 100%;
   min-height: 0;
 }
-.list-head {
-  padding: 16rpx 24rpx 6rpx;
-  font-size: 26rpx;
-  font-weight: 600;
-  color: #2e3a2e;
-}
-.c-orange { color: #e8853c; }
-.list { flex: 1; }
-.list-item {
-  background: #ffffff;
-  margin: 8rpx 24rpx;
-  padding: 16rpx 20rpx;
-  border-radius: 14rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.03);
-}
-.li-main { display: flex; align-items: center; }
-.li-name { font-size: 28rpx; font-weight: 600; color: #2e3a2e; }
-.li-tag {
-  margin-left: 12rpx;
-  font-size: 20rpx;
-  color: #6fa95c;
-  background: #edf5e8;
-  padding: 2rpx 10rpx;
-  border-radius: 6rpx;
-}
-.li-sub { color: #8a948a; font-size: 22rpx; margin-top: 4rpx; }
-.empty-state { text-align: center; color: #9aa39a; font-size: 26rpx; padding: 40rpx 0; }
-.emoji { display: block; font-size: 50rpx; margin-bottom: 10rpx; }
 
 /* 详情卡片 */
 .mask {
@@ -81,38 +46,50 @@
   border-radius: 24rpx 24rpx 0 0;
   padding: 32rpx 32rpx 48rpx;
   z-index: 11;
+  max-height: 86vh;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 .d-head {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 }
-.d-name { font-size: 36rpx; font-weight: 700; color: #2e3a2e; }
+.d-title { display: flex; align-items: center; }
+.d-emoji { font-size: 60rpx; margin-right: 18rpx; line-height: 1; }
+.d-name { display: block; font-size: 38rpx; font-weight: 700; color: #2e3a2e; }
+.d-variety { display: block; font-size: 24rpx; color: #9aa39a; margin-top: 6rpx; }
 .d-close-x { color: #c0c6c0; font-size: 36rpx; padding: 0 8rpx; }
-.d-row {
-  margin-top: 18rpx;
-  font-size: 28rpx;
-  color: #333333;
-  display: flex;
-  align-items: center;
+
+.d-rows {
+  margin-top: 24rpx;
+  background: #f6faf0;
+  border-radius: 14rpx;
+  padding: 4rpx 20rpx;
 }
+.d-row { display: flex; align-items: center; padding: 14rpx 0; }
 .d-label { color: #9aa39a; font-size: 24rpx; width: 120rpx; flex-shrink: 0; }
-.d-block { margin-top: 18rpx; display: flex; align-items: flex-start; }
-.d-block-label {
-  color: #9aa39a;
+.d-row text:last-child { font-size: 28rpx; color: #333333; }
+
+.d-sec { margin-top: 24rpx; }
+.d-sec-title {
   font-size: 24rpx;
-  width: 120rpx;
-  flex-shrink: 0;
+  color: #e8853c;
+  font-weight: 600;
+  margin-bottom: 8rpx;
 }
-.d-block-text { flex: 1; font-size: 27rpx; color: #333333; line-height: 1.5; }
+.d-sec-text { font-size: 27rpx; color: #333333; line-height: 1.55; }
+
 .d-tip {
-  margin-top: 22rpx;
+  margin-top: 24rpx;
   background: #fbf4ea;
   color: #b08a5c;
   font-size: 26rpx;
   padding: 16rpx;
   border-radius: 12rpx;
+  line-height: 1.5;
 }
+
 .d-actions {
   margin-top: 28rpx;
   display: flex;
@@ -131,6 +108,7 @@
 .d-big-btn.on { background: #e8853c; color: #ffffff; }
 .d-big-btn.check { color: #6fa95c; background: #edf5e8; }
 .d-big-btn.check.on { background: #6fa95c; color: #ffffff; }
+.d-big-btn.disabled { opacity: 0.4; }
 .d-feedback {
   margin-top: 14rpx;
   width: 100%;

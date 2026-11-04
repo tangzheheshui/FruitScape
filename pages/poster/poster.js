@@ -168,7 +168,7 @@ Page({
       ctx.fill();
       ctx.textAlign = 'left';
       ctx.font = '11px sans-serif';
-      let label = f.name;
+      let label = f.variety || f.name;
       if (tasted) label = '✓ ' + label;
       else label = (EMOJI[f.category] || '🍎') + ' ' + label;
       if (ending) label += ' ⏳';

@@ -2,6 +2,18 @@ const fruit = require('../../utils/fruit.js');
 const checkin = require('../../utils/checkin.js');
 const fruitDetail = require('../../data/fruit_detail.js');
 
+// 品类 → emoji
+const EMOJI = {
+  '青梅': '🍏', '桑葚': '🫐', '枇杷': '🟡', '草莓': '🍓', '樱桃': '🍒',
+  '荔枝': '🔴', '杨梅': '🔴', '芒果': '🥭', '杏': '🟠', '桃': '🍑',
+  '西瓜': '🍉', '葡萄': '🍇', '甜瓜': '🍈', '龙眼': '🟤', '无花果': '🟣',
+  '猕猴桃': '🥝', '梨': '🍐', '石榴': '🔴', '枣': '🟤', '苹果': '🍎',
+  '柿子': '🟠', '山楂': '🔴', '柚子': '🍊', '柑橘': '🍊', '橙': '🍊',
+  '火龙果': '🟣', '杨桃': '⭐', '番石榴': '🟢', '蓝莓': '🫐', '李子': '🟣',
+  '百香果': '🟡', '莲雾': '🔴', '释迦': '🟢', '菠萝蜜': '🟡', '青枣': '🟢',
+  '椰子': '🥥', '人参果': '🟠', '板栗': '🟤', '核桃': '🟤'
+};
+
 Page({
   data: {
     months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
@@ -11,11 +23,12 @@ Page({
     mapLng: 104.5,
     mapScale: 4,
     markers: [],
-    list: [],
     showDetail: false,
     detail: null,
     detailFav: false,
-    detailChecked: false
+    detailChecked: false,
+    detailEmoji: '',
+    canCheckin: true
   },
 
   onLoad() {
@@ -39,10 +52,6 @@ Page({
 
   refresh() {
     const m = this.data.month;
-    const list = fruit.byMonth(m).map(function (f) {
-      return Object.assign({}, f, { season: fruit.seasonLabel(f) });
-    });
-
     const markers = fruit.all().map(function (f, i) {
       const active = fruit.inSeason(f, m);
       const marker = {
@@ -69,8 +78,7 @@ Page({
       }
       return marker;
     });
-
-    this.setData({ list: list, markers: markers, monthLabel: m + '月' });
+    this.setData({ markers: markers, monthLabel: m + '月', canCheckin: m === fruit.currentMonth() });
   },
 
   chooseMonth(e) {
@@ -81,18 +89,9 @@ Page({
   },
 
   onMarkerTap(e) {
-    // markertap / labeltap 都走这里；兼容不同基础库返回 markerId 的位置
     const idx = (e.detail && e.detail.markerId != null) ? e.detail.markerId : e.markerId;
     const f = fruit.all()[idx];
     if (f) this.showDetail(f);
-  },
-
-  onListTap(e) {
-    const id = e.currentTarget.dataset.id;
-    const f = fruit.byId(id);
-    if (!f) return;
-    this.focusFruit(id);
-    this.showDetail(f);
   },
 
   focusFruit(id) {
@@ -113,7 +112,8 @@ Page({
         identify: extra.identify || ''
       }),
       detailFav: fruit.isFavorite(f.id),
-      detailChecked: checkin.isChecked(f.id)
+      detailChecked: checkin.isChecked(f.id),
+      detailEmoji: EMOJI[f.category] || '🍎'
     });
   },
 
@@ -130,6 +130,10 @@ Page({
   },
 
   onToggleCheckin() {
+    if (!this.data.canCheckin) {
+      wx.showToast({ title: '仅当月可打卡', icon: 'none' });
+      return;
+    }
     const d = this.data.detail;
     if (!d) return;
     const now = checkin.toggle(d.id);
