@@ -2,7 +2,6 @@
   "pages": [
     "pages/index/index",
     "pages/search/search",
-    "pages/nearby/nearby",
     "pages/favorite/favorite",
     "pages/poster/poster",
     "pages/about/about"
@@ -22,17 +21,10 @@
     "list": [
       { "pagePath": "pages/index/index", "text": "首页", "iconPath": "images/tab-home.png", "selectedIconPath": "images/tab-home-active.png" },
       { "pagePath": "pages/search/search", "text": "搜索", "iconPath": "images/tab-search.png", "selectedIconPath": "images/tab-search-active.png" },
-      { "pagePath": "pages/nearby/nearby", "text": "附近", "iconPath": "images/tab-nearby.png", "selectedIconPath": "images/tab-nearby-active.png" },
       { "pagePath": "pages/favorite/favorite", "text": "收藏", "iconPath": "images/tab-favorite.png", "selectedIconPath": "images/tab-favorite-active.png" },
       { "pagePath": "pages/about/about", "text": "关于", "iconPath": "images/tab-about.png", "selectedIconPath": "images/tab-about-active.png" }
     ]
   },
-  "permission": {
-    "scope.userLocation": {
-      "desc": "用于计算你到各产区的直线距离，位置仅在本机计算，不会上传"
-    }
-  },
-  "requiredPrivateInfos": ["getLocation"],
   "sitemapLocation": "sitemap.json",
   "lazyCodeLoading": "requiredComponents"
 }

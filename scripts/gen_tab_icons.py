@@ -1,4 +1,4 @@
-"""Generate tabBar icons (5 tabs x normal/selected) as anti-aliased PNGs.
+"""Generate tabBar icons (4 tabs x normal/selected) as anti-aliased PNGs.
 
 纯标准库（zlib/struct），无第三方依赖。形状用归一化坐标的几何判定绘制，
 再用 3x3 超采样做边缘抗锯齿。
@@ -57,13 +57,6 @@ def search(x, y):
     ring = 0.17 <= dist(x, y, 0.42, 0.42) <= 0.27
     handle = seg_dist(x, y, 0.62, 0.62, 0.90, 0.90) <= 0.055
     return ring or handle
-
-
-def nearby(x, y):
-    body = dist(x, y, 0.5, 0.40) <= 0.30
-    tri = point_in_poly(x, y, [(0.26, 0.60), (0.74, 0.60), (0.50, 0.90)])
-    hole = dist(x, y, 0.5, 0.40) <= 0.11
-    return (body or tri) and not hole
 
 
 def _star_poly(cx, cy, R, r):
@@ -127,7 +120,6 @@ def main():
     shapes = {
         "home": home,
         "search": search,
-        "nearby": nearby,
         "favorite": favorite,
         "about": about,
     }

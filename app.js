@@ -1,6 +1,6 @@
 App({
   globalData: {
-    // 从搜索/附近/收藏跳转过来时，首页需要定位并高亮的果实 id
+    // 从搜索/收藏跳转过来时，首页需要定位并高亮的果实 id
     focusFruitId: null,
     version: '1.0.0'
   },

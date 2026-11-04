@@ -26,7 +26,7 @@ Page({
   },
 
   onShow() {
-    // 从搜索/附近/收藏跳转过来时，定位并高亮指定果实
+    // 从搜索/收藏跳转过来时，定位并高亮指定果实
     const app = getApp();
     if (app.globalData.focusFruitId) {
       const id = app.globalData.focusFruitId;

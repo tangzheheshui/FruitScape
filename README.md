@@ -2,15 +2,14 @@
 
 > 看露天应季水果，拒绝大棚反季。
 
-一个只展示「露天自然成熟」水果的微信小程序：按月切换、地图看产区、按水果/省份检索、附近排序、收藏、一键生成本月清单海报。
+一个只展示「露天自然成熟」水果的微信小程序：按月切换、地图看产区、按水果/省份检索、收藏、一键生成本月清单海报。
 
 ## 技术栈（MVP）
 - 微信小程序原生（wxml / wxss / js），无第三方组件库
 - 地图：微信原生 `<map>` 组件
-- 数据：`data/fruit_data.js` 静态本地 JSON
+- 数据：`data/fruit_data.js` 静态本地数据
 - 收藏：`wx.setStorageSync` 本地存储
 - 海报：Canvas 2D 绘制
-- 定位：用户主动点击才申请，距离完全前端本地计算
 
 ## 目录结构
 ```
@@ -20,19 +19,19 @@ FruitMap/
 ├── sitemap.json
 ├── data/fruit_data.js        # 果实数据（id/产区/经纬度/上市月份/避坑tip）
 ├── utils/fruit.js              # 数据查询 + 收藏工具
-├── utils/privacy.js            # 隐私协议授权兜底（定位 / 写入相册）
+├── utils/privacy.js            # 隐私协议授权兜底（写入相册）
 ├── images/                     # 地图点位图标 + tabBar 图标（脚本生成）
 ├── scripts/
 │   ├── gen_icons.py            # 生成地图点位图标（Python 3 标准库，无依赖）
-│   ├── gen_tab_icons.py        # 生成 5 个 tab 的 10 张图标
+│   ├── gen_tab_icons.py        # 生成 4 个 tab 的 8 张图标
 │   └── gen_app_icon.py         # 生成应用图标（依赖 Pillow）
 ├── docs/
+│   ├── requirements.md         # 最终需求总结
 │   ├── content-plan.md         # 小红书 + 公众号内容运营方案
 │   └── publish-guide.md        # 小程序发布流程 + 审核材料清单
 └── pages/
     ├── index/     首页：月份 + 地图 + 当月列表 + 详情
     ├── search/    搜索：按水果 / 按省份
-    ├── nearby/    附近：按距离排序当月产区
     ├── favorite/  收藏
     ├── poster/    海报生成
     └── about/     关于 / 免责声明
@@ -46,11 +45,10 @@ FruitMap/
    ```bash
    python scripts/gen_icons.py
    ```
-5. 编译预览。真机才能完整体验「附近」定位和「保存海报到相册」。
+5. 编译预览。真机才能完整体验「保存海报到相册」。
 
 ## 发布前必做
-- 公众平台「设置 - 服务内容声明 - 用户隐私保护指引」中勾选「位置信息」「相册（仅写入）」。未配置时，真机上定位与保存海报会被系统直接拒绝（代码侧已由 `utils/privacy.js` 做授权兜底，但后台声明缺失仍会失败）。
-- `wx.getLocation` 需在「开发管理 - 接口设置」申请开通，个人主体通常无法申请；未开通时「附近」会降级为「按省份查」。
+- 公众平台「设置 - 服务内容声明 - 用户隐私保护指引」中勾选「相册（仅写入）」。未配置时，真机上保存海报会被系统直接拒绝（代码侧已由 `utils/privacy.js` 做授权兜底，但后台声明缺失仍会失败）。
 - 上传版本号与 `pages/about/about.js` 中的 `version` 保持一致。
 
 ## 数据说明

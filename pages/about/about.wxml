@@ -17,7 +17,7 @@
 
   <view class="section">
     <view class="sec-title">隐私说明</view>
-    <view class="sec-body">“附近”功能仅在本地计算你到各产区的距离，不收集、不上传任何位置信息；保存海报时仅写入相册，不读取你的照片。</view>
+    <view class="sec-body">保存海报时仅写入相册，不读取你的照片；除此之外本小程序不收集任何个人隐私信息。</view>
     <view class="link" bindtap="openPrivacy">查看《用户隐私保护指引》</view>
   </view>
 
