@@ -81,9 +81,3 @@
   padding: 24rpx 0;
   border-radius: 44rpx;
 }
-.footer {
-  text-align: center;
-  color: #9aa39a;
-  font-size: 24rpx;
-  padding: 0 0 40rpx;
-}

@@ -25,4 +25,6 @@
     </view>
     <view wx:if="{{favorites.length === 0}}" class="empty-state"><text class="emoji">♡</text>还没有收藏，去地图页点个果子收藏吧</view>
   </scroll-view>
+
+  <view class="footer" bindtap="goAbout">关于 · 免责声明 · 意见反馈</view>
 </view>

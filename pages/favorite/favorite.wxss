@@ -59,3 +59,9 @@
   padding: 80rpx 0;
 }
 .emoji { display: block; font-size: 60rpx; margin-bottom: 16rpx; }
+.footer {
+  text-align: center;
+  color: #9aa39a;
+  font-size: 24rpx;
+  padding: 12rpx 0 32rpx;
+}

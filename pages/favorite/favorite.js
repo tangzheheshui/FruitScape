@@ -44,5 +44,9 @@ Page({
   goFruit(e) {
     getApp().globalData.focusFruitId = e.currentTarget.dataset.id;
     wx.switchTab({ url: '/pages/index/index' });
+  },
+
+  goAbout() {
+    wx.navigateTo({ url: '/pages/about/about' });
   }
 });

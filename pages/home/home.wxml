@@ -35,5 +35,4 @@
   </scroll-view>
 
   <view class="share" bindtap="goPoster">生成分享图</view>
-  <view class="footer" bindtap="goAbout">关于 · 免责声明 · 意见反馈</view>
 </view>

@@ -58,9 +58,5 @@ Page({
 
   goPoster() {
     wx.navigateTo({ url: '/pages/poster/poster?month=' + this.data.month });
-  },
-
-  goAbout() {
-    wx.navigateTo({ url: '/pages/about/about' });
   }
 });
