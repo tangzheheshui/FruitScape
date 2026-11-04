@@ -51,5 +51,17 @@ module.exports = {
   "papagan-pujiang": { advice: "皮松好剥，清甜化渣", note: "1月才熟，2-3月风味最佳" },
   "huolongguo-nanning": { advice: "红心甜，切半挖着吃", note: "6-11月多批次，9-10月批次最甜" },
   "yangtao-zhanjiang": { advice: "选黄绿、棱饱满的", note: "秋冬上市，10-11月风味最佳" },
-  "fanshiliu-zhangzhou": { advice: "芭乐脆甜，可撒酸梅粉", note: "秋冬甜脆，10-11月风味最佳" }
+  "fanshiliu-zhangzhou": { advice: "芭乐脆甜，可撒酸梅粉", note: "秋冬甜脆，10-11月风味最佳" },
+  "lanmei-qingdao": { advice: "选果粉厚、饱满硬挺的", note: "6月上市，7月风味最佳" },
+  "cuili-maoxian": { advice: "选脆硬、果皮紫红的", note: "8月上市，9月风味最佳" },
+  "baixiangguo-yulin": { advice: "皮皱更甜，挖籽冲水或拌酸奶", note: "7月上市，9-11月风味最佳" },
+  "lianwu-haikou": { advice: "选色深、果脐闭合的，冷藏更脆", note: "5月上市，6-7月风味最佳" },
+  "shijia-haikou": { advice: "按软硬判断，软了再吃", note: "7月上市，8-10月风味最佳" },
+  "boluomi-zhanjiang": { advice: "选香气浓、果壳微软的", note: "6月上市，7-9月风味最佳" },
+  "qingzao-zhangzhou": { advice: "选翠绿、果肉脆的", note: "12月上市，1-2月风味最佳" },
+  "yezi-wenchang": { advice: "喝汁选嫩果，吃椰肉选老果", note: "6-9月盛产，汁最清甜" },
+  "renshenguo-shilin": { advice: "选黄白色、软熟的", note: "7月上市，8-10月风味最佳" },
+  "xianggua-tongliao": { advice: "选瓜香浓、脐软的", note: "6月上市，7-8月风味最佳" },
+  "banli-qianxi": { advice: "选饱满、无虫眼的", note: "9月下树，10月风味最佳" },
+  "hetao-akesu": { advice: "纸皮易剥，选果仁饱满的", note: "9月下树，10月风味最佳" }
 };
