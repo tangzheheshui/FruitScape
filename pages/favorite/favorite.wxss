@@ -59,9 +59,16 @@
   padding: 80rpx 0;
 }
 .emoji { display: block; font-size: 60rpx; margin-bottom: 16rpx; }
-.footer {
-  text-align: center;
-  color: #9aa39a;
-  font-size: 24rpx;
-  padding: 12rpx 0 32rpx;
+.about-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  margin: 12rpx 24rpx 32rpx;
+  padding: 26rpx 24rpx;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.03);
+  font-size: 28rpx;
+  color: #2e3a2e;
 }
+.arrow { color: #c0c6c0; font-size: 36rpx; }
